@@ -1,3 +1,3 @@
 --Creacion de la base de datos necesaria para el proyecto
-hola mundo
-prueba de algo
+--hola mundo
+--prueba de algo
