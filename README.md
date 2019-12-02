@@ -1,2 +1,2 @@
 # SistemaTutoriaF
- Proyecto: Software de Apoyo al Programa de Tutoria Universsitaria DAI-UNSAAC
+ Proyecto: Software de Apoyo al Programa de Tutoria Universitaria DAI-UNSAAC
