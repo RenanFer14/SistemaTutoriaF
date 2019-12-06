@@ -5,17 +5,36 @@ if exists (select * from sysdatabases where name='BDTutoria' )
 go
 create database BDTutoria
 go
+
+use BDTutoria
+go
+/* Crear los tipos*/
+CREATE TYPE TCodDocente FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodEstudiante FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodListaTutorado FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodSolicitudCita FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodListaTutorado FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodSolicitudCambio FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodAtencionEspecial FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodHorarioDocente FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodHorarioEstudiante FROM varchar(10) NOT NULL;
+go
+CREATE TYPE TCodHorarioDocente FROM varchar(10) NOT NULL;
+go
 --------------------------------------------
 ----------CREACION DE LAS TABLAS -----------
 --------------------------------------------
-use BDTutoria
-go
-
-CREATE TYPE TCodHorarioDocente FROM varchar(10) NOT NULL;
-go
 create table TDOCENTE
 (
-    CodDocente varchar(10),
+    CodDocente TCodDocente NOT NULL,
 	Contraseña varchar(20),
 	Nombre varchar(20),
 	APaterno varchar(20),
@@ -28,7 +47,7 @@ go
 
 create table TESTUDIANTE
 (
-    CodEstudiante varchar(10),
+    CodEstudiante TCodEstudiante NOT NULL,
 	Contraseña varchar(20),
 	Nombre varchar(20),
 	APaterno varchar(20),
@@ -45,7 +64,7 @@ create table TESTUDIANTE
 go
 create table TLISTATUTORADOS
 (
-    CodListaTutorado varchar(10),
+    CodListaTutorado TCodListaTutorado NOT NULL,
 	CodDocente varchar(10),
 	CodEstudiante varchar(10),
 	primary key(CodListaTutorado),
@@ -55,7 +74,7 @@ create table TLISTATUTORADOS
 go
 create table TSOLICITUDCITA
 (
-    CodSolicitudCita varchar(10),
+    CodSolicitudCita TCodSolicitudCita NOT NULL,
 	CodDocente varchar(10),
 	CodEstudiante varchar(10),
 	Razon varchar(50),
@@ -70,7 +89,7 @@ create table TSOLICITUDCITA
 go
 create table TSOLICITUDCAMBIO
 (
-    CodSolicitudCambio varchar(10),
+    CodSolicitudCambio TCodSolicitudCambio NOT NULL,
 	CodDocente varchar(10),
 	CodEstudiante varchar(10),
 	Razon varchar(50),
@@ -84,7 +103,7 @@ create table TSOLICITUDCAMBIO
 go
 create table TATENCIONESPECIAL
 (
-    CodAtencionEspecial varchar(10),
+    CodAtencionEspecial TCodAtencionEspecial NOT NULL,
 	CodDocente varchar(10),
 	CodEstudiante varchar(10),	
 	FechaDerivación datetime,
@@ -106,7 +125,7 @@ create table THORARIODOCENTE
 go
 create table THORARIOESTUDIANTE
 (
-    CodHorarioEstudiante varchar(10),
+    CodHorarioEstudiante TCodHorarioEstudiante NOT NULL,
 	CodEstudiante varchar(10),
 	Semestre varchar(10),
 	primary key(CodHorarioEstudiante),
@@ -122,20 +141,20 @@ create table THORARIODIADOCENTE
 	Miercoles varchar(25),
 	Jueves varchar(25),
 	Viernes varchar(25),
-	primary key(CodHorarioDocente,hora),
+	primary key(CodHorarioDocente,Hora),
 	foreign key(CodHorarioDocente) references THORARIODOCENTE(CodHorarioDocente)
 )
 go
 create table THORARIODIAESTUDIANTE
 (
-    CodHorarioEstudiante varchar(10),
+    CodHorarioEstudiante TCodHorarioEstudiante NOT NULL,
 	Hora varchar(10),
 	Lunes varchar(25),
 	Martes varchar(25),
 	Miercoles varchar(25),
 	Jueves varchar(25),
 	Viernes varchar(25),
-	primary key(CodHorarioEstudiante),
+	primary key(CodHorarioEstudiante,Hora),
 	foreign key(CodHorarioEstudiante) references THORARIOESTUDIANTE(CodHorarioEstudiante)
 )
 go
