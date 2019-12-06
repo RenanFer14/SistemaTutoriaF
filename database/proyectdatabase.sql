@@ -29,6 +29,8 @@ CREATE TYPE TCodHorarioEstudiante FROM varchar(10) NOT NULL;
 go
 CREATE TYPE TCodHorarioDocente FROM varchar(10) NOT NULL;
 go
+CREATE TYPE TCodEvaluarTutor FROM varchar(10) NOT NULL;
+GO
 --------------------------------------------
 ----------CREACION DE LAS TABLAS -----------
 --------------------------------------------
@@ -160,7 +162,7 @@ create table THORARIODIAESTUDIANTE
 go
 create table TEVALUARTUTOR
 (
-    CodEvaluarTutor varchar(10),
+    CodEvaluarTutor TCodEvaluarTutor NOT NULL,
 	CodDocente varchar(10),
 	CodEstudiante varchar(10),
 	primary key(CodEvaluarTutor),
@@ -181,9 +183,9 @@ insert into TESTUDIANTE values('164778','132657899','Fernando','Acuña','Fujimor
 
 -------------------------------------------THORARIO-------------------------------------------
 insert into THORARIODOCENTE values('H0001','114623','2018-II')
-insert into THORARIODIADOCENTE values('H0001','7-8','IN203','','IN203','','IN203')
-insert into THORARIODIADOCENTE values('H0001','8-9','IN203','','IN203','','')
-insert into THORARIODIADOCENTE values('H0001','9-10','','IN303','','IN303','')
+insert into THORARIODIADOCENTE values('H0001','07-08','IN203','','IN203','','IN203')
+insert into THORARIODIADOCENTE values('H0001','08-09','IN203','','IN203','','')
+insert into THORARIODIADOCENTE values('H0001','09-10','','IN303','','IN303','')
 insert into THORARIODIADOCENTE values('H0001','10-11','','IN303','','IN303','')
 insert into THORARIODIADOCENTE values('H0001','11-12','','','','','')
 insert into THORARIODIADOCENTE values('H0001','12-13','','','','','')
