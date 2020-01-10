@@ -9,34 +9,31 @@ go
 use BDTutoria
 go
 /* Crear los tipos*/
-CREATE TYPE TCodDocente FROM varchar(10) NOT NULL;
+CREATE TYPE CodDocente FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodEstudiante FROM varchar(10) NOT NULL;
+CREATE TYPE CodEstudiante FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodListaTutorado FROM varchar(10) NOT NULL;
+CREATE TYPE CodListaTutorado FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodSolicitudCita FROM varchar(10) NOT NULL;
+CREATE TYPE CodSolicitudCita FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodListaTutorado FROM varchar(10) NOT NULL;
+CREATE TYPE CodSolicitudCambio FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodSolicitudCambio FROM varchar(10) NOT NULL;
+CREATE TYPE CodAtencionEspecial FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodAtencionEspecial FROM varchar(10) NOT NULL;
+CREATE TYPE CodHorarioDocente FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodHorarioDocente FROM varchar(10) NOT NULL;
+CREATE TYPE CodHorarioEstudiante FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodHorarioEstudiante FROM varchar(10) NOT NULL;
+CREATE TYPE CodEvaluarTutor FROM varchar(10) NOT NULL;
 go
-CREATE TYPE TCodHorarioDocente FROM varchar(10) NOT NULL;
-go
-CREATE TYPE TCodEvaluarTutor FROM varchar(10) NOT NULL;
-GO
+
 --------------------------------------------
 ----------CREACION DE LAS TABLAS -----------
 --------------------------------------------
-create table TDOCENTE
+create table TDocente
 (
-    CodDocente TCodDocente NOT NULL,
+    CodDocente CodDocente NOT NULL,
 	Contraseña varchar(20),
 	Nombre varchar(20),
 	APaterno varchar(20),
@@ -47,38 +44,38 @@ create table TDOCENTE
 )
 go
 
-create table TESTUDIANTE
+create table TEstudiante
 (
-    CodEstudiante TCodEstudiante NOT NULL,
-	Contraseña varchar(20),
-	Nombre varchar(20),
-	APaterno varchar(20),
-	AMaterno varchar(20),
+    CodEstudiante CodEstudiante NOT NULL,
+	Contraseña varchar(20) not null,
+	Nombre varchar(20) not null,
+	APaterno varchar(20) not null,
+	AMaterno varchar(20) not null,
 	Estado varchar(10),--Activo: es Tutorado, No Activo:No es tutorado
 	FechaNacimiento datetime,
 	Distrito varchar(20),
 	Provincia varchar(20),
 	Region varchar(20),
-	Padre varchar(50),
-	Madre varchar(50)
+	NombrePadre varchar(50),
+	NombreMadre varchar(50)
 	primary key(CodEstudiante)
 )
 go
-create table TLISTATUTORADOS
+create table TListaTutorados
 (
-    CodListaTutorado TCodListaTutorado NOT NULL,
-	CodDocente varchar(10),
-	CodEstudiante varchar(10),
-	primary key(CodListaTutorado),
+    CodListaTutorado CodListaTutorado NOT NULL,
+	CodDocente varchar(10) not null,
+	CodEstudiante varchar(10) not null,
+	primary key(CodListaTutorado,CodDocente,CodEstudiante),
 	foreign key(CodDocente) references TDocente(CodDocente),
 	foreign key(CodEstudiante) references TEstudiante(CodEstudiante),
 )
 go
-create table TSOLICITUDCITA
+create table TSolicitudCita
 (
-    CodSolicitudCita TCodSolicitudCita NOT NULL,
-	CodDocente varchar(10),
-	CodEstudiante varchar(10),
+    CodSolicitudCita CodSolicitudCita NOT NULL,
+	CodDocente varchar(10) not null,
+	CodEstudiante varchar(10) not null,
 	Razon varchar(50),
 	FechaSolicitud datetime,
 	Hora varchar(10),
@@ -89,9 +86,9 @@ create table TSOLICITUDCITA
 	foreign key(CodEstudiante) references TEstudiante(CodEstudiante),
 )
 go
-create table TSOLICITUDCAMBIO
+create table TSolicitudCambio
 (
-    CodSolicitudCambio TCodSolicitudCambio NOT NULL,
+    CodSolicitudCambio CodSolicitudCambio NOT NULL,
 	CodDocente varchar(10),
 	CodEstudiante varchar(10),
 	Razon varchar(50),
@@ -103,9 +100,9 @@ create table TSOLICITUDCAMBIO
 	foreign key(CodEstudiante) references TEstudiante(CodEstudiante)
 )
 go
-create table TATENCIONESPECIAL
+create table TAtencionEspecial
 (
-    CodAtencionEspecial TCodAtencionEspecial NOT NULL,
+    CodAtencionEspecial CodAtencionEspecial NOT NULL,
 	CodDocente varchar(10),
 	CodEstudiante varchar(10),	
 	FechaDerivación datetime,
@@ -116,27 +113,27 @@ create table TATENCIONESPECIAL
 	foreign key(CodEstudiante) references TEstudiante(CodEstudiante)
 )
 go
-create table THORARIODOCENTE
+create table THorarioDocente
 (
-    CodHorarioDocente TCodHorarioDocente NOT NULL,
+    CodHorarioDocente CodHorarioDocente NOT NULL,
 	CodDocente varchar(10),
 	Semestre varchar(10),
 	primary key(CodHorarioDocente),
 	foreign key(CodDocente) references TDocente(CodDocente) 
 )
 go
-create table THORARIOESTUDIANTE
+create table THorarioEstudiante
 (
-    CodHorarioEstudiante TCodHorarioEstudiante NOT NULL,
+    CodHorarioEstudiante CodHorarioEstudiante NOT NULL,
 	CodEstudiante varchar(10),
 	Semestre varchar(10),
 	primary key(CodHorarioEstudiante),
 	foreign key(CodEstudiante) references TEstudiante(CodEstudiante) 
 )
 go
-create table THORARIODIADOCENTE
+create table THorarioDetalleDocente
 (
-    CodHorarioDocente TCodHorarioDocente NOT NULL,
+    CodHorarioDocente CodHorarioDocente NOT NULL,
 	Hora varchar(10),
 	Lunes varchar(25),
 	Martes varchar(25),
@@ -147,9 +144,9 @@ create table THORARIODIADOCENTE
 	foreign key(CodHorarioDocente) references THORARIODOCENTE(CodHorarioDocente)
 )
 go
-create table THORARIODIAESTUDIANTE
+create table THorarioDetalleEstudiante
 (
-    CodHorarioEstudiante TCodHorarioEstudiante NOT NULL,
+    CodHorarioEstudiante CodHorarioEstudiante NOT NULL,
 	Hora varchar(10),
 	Lunes varchar(25),
 	Martes varchar(25),
@@ -160,9 +157,9 @@ create table THORARIODIAESTUDIANTE
 	foreign key(CodHorarioEstudiante) references THORARIOESTUDIANTE(CodHorarioEstudiante)
 )
 go
-create table TEVALUARTUTOR
+create table TEvaluarTutor
 (
-    CodEvaluarTutor TCodEvaluarTutor NOT NULL,
+    CodEvaluarTutor CodEvaluarTutor NOT NULL,
 	CodDocente varchar(10),
 	CodEstudiante varchar(10),
 	primary key(CodEvaluarTutor),
@@ -173,22 +170,48 @@ go
 
 
 -------------------------------------------DOCENTE-------------------------------------------
-insert into TDOCENTE values('114623','123456789','Pedro','Bustamante','Solis','Activo','Av. La Cultura Nro 113')
-insert into TDOCENTE values('124843','987654321','Juan Pedro','Moran','Arquimides','Activo','Av. Ccollasuyo Nro 713')
-insert into TDOCENTE values('154724','123456','Luis','Boris','Montreal','No Activo','Av. Navl Nro 193')
+insert into TDocente values('114623','123456789','Pedro','Bustamante','Solis','Activo','Av. La Cultura Nro 113')
+insert into TDocente values('124843','987654321','Juan Pedro','Moran','Arquimides','Activo','Av. Ccollasuyo Nro 713')
+insert into TDocente values('154724','123456','Luis','Boris','Montreal','Activo','Av. Navl Nro 193')
 
 -------------------------------------------ESTUDIANTE-------------------------------------------
-insert into TESTUDIANTE values('154627','123456789','Juan','Chacon','Villena','Activo','07/05/1992','','','','','')
-insert into TESTUDIANTE values('164778','132657899','Fernando','Acuña','Fujimori','No Activo','07/05/1997','','','','','')
+insert into TEstudiante values('154627','123456789','Juan','Chacon','Villena','Activo','07/05/1992','','','','','')
+insert into TEstudiante values('164778','132652899','Fernando','Acuña','Fujimori','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164779','132652899','Franco','Mogrovejo','Zamalloa','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164780','132653899','Lucio','Lopez','Mosqueira','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164781','132654899','Angel','Lozano','Licona','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164178','132655899','Pepe','Zapata','Gonzales','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164278','132656999','Maria','Mendigure','Estrada','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164378','132657891','Fernanda','Nina','Ponce','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164478','132657892','Marco','Torres','Ramirez','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164578','132657893','Antonio','Villacorta','Villafuerte','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('164678','132657894','Daniel','Guillen','Duran','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('167778','132657895','Javier','Callasaca','Palomino','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('168778','132657896','Jose','Mulder','Quispe','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('169778','132657897','Ruben','Fernandez','Barnechea','Activo','07/05/1997','','','','','')
+insert into TEstudiante values('112778','132657898','Jesus','Peralta','Guzman','Activo','07/05/1997','','','','','')
 
+-------------------------------------------TListaTutorados-------------------------------------------
+insert into TListaTutorados values('L2018201','154724','154627')
+--insert into TListaTutorados values('L2018201','154724','164778')
+--insert into TListaTutorados values('L2018201','154724','164779')
+--insert into TListaTutorados values('L2018201','154724','164780')
+--insert into TListaTutorados values('L2018201','154724','164781')
+insert into TListaTutorados values('L2018202','154623','164178')-----
+--insert into TListaTutorados values('L2018202','154623','164278')
+--insert into TListaTutorados values('L2018202','154623','164378')
+--insert into TListaTutorados values('L2018203','154623','164478')----
 -------------------------------------------THORARIO-------------------------------------------
-insert into THORARIODOCENTE values('H0001','114623','2018-II')
-insert into THORARIODIADOCENTE values('H0001','07-08','IN203','','IN203','','IN203')
-insert into THORARIODIADOCENTE values('H0001','08-09','IN203','','IN203','','')
-insert into THORARIODIADOCENTE values('H0001','09-10','','IN303','','IN303','')
-insert into THORARIODIADOCENTE values('H0001','10-11','','IN303','','IN303','')
-insert into THORARIODIADOCENTE values('H0001','11-12','','','','','')
-insert into THORARIODIADOCENTE values('H0001','12-13','','','','','')
+insert into THorarioDocente values('H0001','114623','2018-II')
+insert into THorarioDetalleDocente values('H0001','07-08','IN203','','IN203','','IN203')
+insert into THorarioDetalleDocente values('H0001','08-09','IN203','','IN203','','')
+insert into THorarioDetalleDocente values('H0001','09-10','','IN303','','IN303','')
+insert into THorarioDetalleDocente values('H0001','10-11','','IN303','','IN303','')
+insert into THorarioDetalleDocente values('H0001','11-12','','','','','')
+insert into THorarioDetalleDocente values('H0001','12-13','','','','','')
 
 --ejemplos 
-select* from THORARIODIADOCENTE
+select* from THorarioDetalleDocente
+select* from TDocente
+select* from TEstudiante
+select * from TListaTutorados where CodListaTutorado='L2018201'
